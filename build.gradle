@@ -1,0 +1,69 @@
+// buildscript必须在顶部，注意位置
+buildscript {
+    // 提取参数,提高复用
+    ext {
+        springBootVersion = '2.1.1.RELEASE'
+    }
+    repositories {
+        // 优先使用国内源
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+    dependencies {
+        // 让spring-boot支持gradle
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.1.1.RELEASE'
+    // flyway插件
+    id "org.flywaydb.flyway" version "5.1.4"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+// 使用spring boot
+apply plugin: "org.springframework.boot"
+// 使用spring boot的自动依赖管理
+apply plugin: 'io.spring.dependency-management'
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+// 指定java版本
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    // 使用国内的源
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    implementation 'io.projectreactor:reactor-core:3.2.5.RELEASE'
+
+    // mysql
+    implementation 'org.flywaydb:flyway-core:5.2.4'
+    implementation 'org.hibernate:hibernate-core:5.4.0.Final'
+    implementation 'mysql:mysql-connector-java:8.0.12'
+
+    // 健康检查依赖
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // mapstruct
+    compile('org.mapstruct:mapstruct:1.3.0.Beta2')
+    compileOnly('org.mapstruct:mapstruct-processor:1.3.0.Beta2')
+    annotationProcessor('org.mapstruct:mapstruct-processor:1.3.0.Beta2')
+
+    // lombok
+    compileOnly "org.projectlombok:lombok:1.18.4"
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    testCompileOnly 'org.projectlombok:lombok:1.18.4'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.4'
+}
